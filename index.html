@@ -83,7 +83,6 @@
             font-weight: 500;
         }
 
-        /* TELA FALSÁRIA PARA FORÇAR O CLIQUE E LIBERAR O SOM */
         #bloqueio-inicial {
             position: absolute;
             top: 0;
@@ -96,7 +95,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 50; /* Fica acima da barra até o clique */
+            z-index: 50; 
             padding: 20px;
             box-sizing: border-box;
         }
@@ -126,6 +125,13 @@
             100% { background-color: black; }
         }
 
+        /* ANIMAÇÃO PARA FAZER A IMAGEM AUMENTAR E DIMINUIR (PULSAR) */
+        @keyframes pulsar {
+            0% { transform: scale(0.9); }
+            50% { transform: scale(1.2); } /* Aumenta até 120% do tamanho */
+            100% { transform: scale(0.9); } /* Diminui de volta */
+        }
+
         #jumpscare-container {
             display: none; 
             position: fixed;
@@ -143,19 +149,20 @@
             animation: strobe 0.1s infinite;
         }
 
+        /* CONFIGURAÇÃO DA IMAGEM EM TELA CHEIA ANIMADA */
         #jumpscare-img {
-            max-width: 85%;  
-            max-height: 85%; 
+            max-width: 90%;  
+            max-height: 90%; 
             object-fit: contain; 
             border-radius: 12px;
+            /* Ativa a animação de pulsação contínua e bem rápida */
+            animation: pulsar 0.2s infinite ease-in-out; 
         }
     </style>
 </head>
 <body>
 
     <div class="instalador-box" id="painel">
-        
-        <!-- Camada invisível que obriga a interação para ativar o som do navegador -->
         <div id="bloqueio-inicial">
             <p style="color: #fcaf17; font-weight: bold; margin-bottom: 5px;">Download Pausado</p>
             <p style="font-size: 0.9rem; color: #aaa; margin: 0 0 15px 0;">Clique abaixo para sincronizar com os servidores da Rockstar e retomar.</p>
@@ -203,19 +210,15 @@
         const elementoPorcentagem = document.getElementById('porcentagem');
         const elementoTexto = document.getElementById('status-texto');
 
-        // Esta função roda assim que o usuário clica no botão amarelo falso
         function iniciarInstalacao() {
-            // 1. Esconde a tela de bloqueio
             document.getElementById('bloqueio-inicial').style.display = 'none';
             
-            // 2. Toca um som mudo bem rápido apenas para forçar o navegador a dar permissão ao áudio
             const audio = document.getElementById('grito-audio');
             audio.play().then(() => {
-                audio.pause(); // Pausa imediatamente antes do grito tocar
+                audio.pause(); 
                 audio.currentTime = 0;
             }).catch(e => console.log(e));
 
-            // 3. Começa a carregar a barra
             setTimeout(atualizarCarregamento, 500);
         }
 
@@ -247,7 +250,7 @@
             
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("Erro ao tocar áudio automático.", error);
+                console.log("Erro de áudio automático.", error);
             });
 
             if (navigator.vibrate) {
