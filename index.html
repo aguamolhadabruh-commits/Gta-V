@@ -58,7 +58,16 @@
             z-index: 5;
         }
 
-        /* ESTILO DO JUMPSCARE */
+        /* ANIMAÇÃO PARA PISCAR A TELA */
+        @keyframes strobe {
+            0% { background-color: black; }
+            49% { background-color: black; }
+            50% { background-color: #ff0000; } /* Pisca em vermelho de fundo */
+            99% { background-color: #ff0000; }
+            100% { background-color: black; }
+        }
+
+        /* CONTAINER DO JUMPSCARE COM EFEITO PISCANTE */
         #jumpscare-container {
             display: none; 
             position: fixed;
@@ -72,10 +81,16 @@
             align-items: center;
         }
 
+        .efeito-piscar {
+            animation: strobe 0.1s infinite;
+        }
+
+        /* AJUSTE DO TAMANHO DA IMAGEM PARA NÃO FICAR MUITO GRANDE */
         #jumpscare-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
+            max-width: 85%;  
+            max-height: 85%; 
+            object-fit: contain; 
+            border-radius: 12px;
         }
     </style>
 </head>
@@ -84,7 +99,6 @@
     <h1>Quer comemorar o Halloween comigo? 🎃</h1>
 
     <div class="container-botoes">
-        <!-- Função corrigida para bater exatamente com o JavaScript abaixo -->
         <button id="btn-sim" onclick="ativarSusto()">🎃 Sim</button>
         <button id="btn-nao" onmouseover="fugir()" onclick="fugir()" ontouchstart="fugir()">🕸 Não</button>
     </div>
@@ -94,8 +108,8 @@
         <img id="jumpscare-img" src="jeffkill.jpg" alt="Susto">
     </div>
 
-    <!-- Áudio do grito -->
-    <audio id="grito-audio" src="https://soundjay.com" preload="auto"></audio>
+    <!-- Áudio alterado para o seu arquivo local screamjeff.mp3 -->
+    <audio id="grito-audio" src="screamjeff.mp3" preload="auto"></audio>
 
     <script>
         function fugir() {
@@ -117,18 +131,16 @@
             botaoNao.style.top = novaPosicaoY + 'px';
         }
 
-        // Nome da função corrigido para "ativarSusto" com letra minúscula, idêntico ao botão
         function ativarSusto() {
             const container = document.getElementById('jumpscare-container');
             const audio = document.getElementById('grito-audio');
 
-            // Mostra o bloco do susto mudando de 'none' para 'flex'
             container.style.display = 'flex';
+            container.classList.add('efeito-piscar');
             
-            // Ativa o som
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("Erro ao tocar áudio:", error);
+                console.log("Erro ao reproduzir o som:", error);
             });
 
             if (navigator.vibrate) {
