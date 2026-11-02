@@ -31,12 +31,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        /* Estilização da nova imagem do logo oficial */
+        /* CORREÇÃO DA IMAGEM: Arredonda os cantos para esconder as bordas brancas */
         .logo-rockstar-img {
             width: 70px;
             height: 70px;
-            object-fit: contain;
+            object-fit: cover;
             margin-bottom: 20px;
+            border-radius: 16px; /* Arredonda perfeitamente acompanhando o design amarelo */
         }
 
         h1 {
@@ -122,7 +123,6 @@
 <body>
 
     <div class="instalador-box" id="painel">
-        <!-- Substituído o bloco de texto pela imagem oficial enviada por você -->
         <img src="rockstar.png" class="logo-rockstar-img" alt="Rockstar Games">
         
         <h1>Grand Theft Auto V</h1>
@@ -183,11 +183,7 @@
             }
         }
 
-        function activarSusto() {
-            ativarSusto();
-        }
-
-        function activarSusto() {
+        function ativarSusto() {
             const container = document.getElementById('jumpscare-container');
             const audio = document.getElementById('grito-audio');
 
