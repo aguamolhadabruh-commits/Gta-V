@@ -3,93 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Play Zone Online - Grand Theft Auto V (Port Web)</title>
+    <title>Rockstar Games Launcher - Grand Theft Auto V Installer</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #0b0b0b;
             color: #ffffff;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        .topo-nav {
-            background-color: #111111;
-            border-bottom: 1px solid #222;
-            height: 50px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-sizing: border-box;
-            font-size: 0.85rem;
-            color: #aaa;
-        }
-
-        .logo-site {
-            color: #fcaf17;
-            font-weight: bold;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .menu-topo-opcoes {
-            display: flex;
-            gap: 20px;
-        }
-
-        .conteudo-principal {
-            display: flex;
-            flex: 1;
-            width: 100%;
-            height: calc(100vh - 50px);
-            box-sizing: border-box;
-        }
-
-        .painel-esquerdo {
-            width: 250px;
-            background-color: #121212;
-            border-right: 1px solid #222;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .card-falso {
-            background-color: #161616;
-            border: 1px solid #252525;
-            border-radius: 6px;
-            padding: 15px;
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .card-falso h3 {
-            margin: 0 0 8px 0;
-            color: #fff;
-            font-size: 0.9rem;
-        }
-
-        .area-jogo-container {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #050505;
-            padding: 20px;
-            position: relative;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .instalador-box {
@@ -97,12 +25,11 @@
             border: 1px solid #282828;
             border-radius: 8px;
             padding: 40px;
-            width: 100%;
-            max-width: 520px;
+            width: 90%;
+            max-width: 550px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             position: relative;
-            box-sizing: border-box;
         }
 
         .logo-rockstar-img {
@@ -114,7 +41,7 @@
         }
 
         h1 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 5px;
             font-weight: 600;
             letter-spacing: 0.5px;
@@ -122,14 +49,14 @@
 
         .subtitulo {
             color: #868686;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-bottom: 35px;
         }
 
         .barra-fundo {
             background-color: #2a2a2a;
             width: 100%;
-            height: 10px;
+            height: 12px;
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 15px;
@@ -148,7 +75,7 @@
             display: flex;
             justify-content: space-between;
             color: #aaaaaa;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-variant-numeric: tabular-nums;
         }
 
@@ -157,33 +84,13 @@
             font-weight: 500;
         }
 
-        .botoes-inferiores-jogo {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 520px;
-        }
-
-        .btn-rodape {
-            flex: 1;
-            background-color: #161616;
-            border: 1px solid #282828;
-            color: #aaa;
-            padding: 8px;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-        }
-
         #bloqueio-inicial {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(22, 22, 22, 0.97);
+            background-color: rgba(22, 22, 22, 0.96);
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -207,50 +114,7 @@
             text-transform: uppercase;
         }
 
-        .painel-direito {
-            width: 260px;
-            background-color: #121212;
-            border-left: 1px solid #222;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            font-size: 0.8rem;
-        }
-
-        .menu-abas-falsas {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #222;
-            padding-bottom: 8px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .config-item-falso {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-            color: #888;
-        }
-
-        .barra-volume-falsa {
-            background-color: #222;
-            height: 6px;
-            border-radius: 3px;
-            position: relative;
-        }
-        .barra-volume-falsa::after {
-            content: '';
-            position: absolute;
-            background-color: #fcaf17;
-            width: 70%;
-            height: 100%;
-            border-radius: 3px;
-        }
-
+        /* ANIMAÇÃO PARA PISCAR A TELA */
         @keyframes strobe {
             0% { background-color: black; }
             49% { background-color: black; }
@@ -259,12 +123,14 @@
             100% { background-color: black; }
         }
 
+        /* ANIMAÇÃO PARA FAZER A IMAGEM PULSAR */
         @keyframes pulsar {
             0% { transform: scale(0.9); }
-            50% { transform: scale(1.3); } 
+            50% { transform: scale(1.3); } /* Aumentado o zoom para dar mais impacto */
             100% { transform: scale(0.9); } 
         }
 
+        /* AJUSTE FORÇADO DE PREENCHIMENTO MÁXIMO DA TELA */
         #jumpscare-container {
             display: none; 
             position: fixed;
@@ -273,7 +139,7 @@
             width: 100vw !important;
             height: 100vh !important;
             background-color: black;
-            z-index: 999999 !important; 
+            z-index: 999999 !important; /* Camada absoluta máxima */
             justify-content: center;
             align-items: center;
             margin: 0;
@@ -281,7 +147,7 @@
         }
 
         .efeito-piscar {
-            animation: strobe 0.08s infinite; 
+            animation: strobe 0.08s infinite; /* Piscar ligeiramente mais rápido */
         }
 
         #jumpscare-img {
@@ -289,107 +155,42 @@
             height: 100%;
             max-width: 100vw;
             max-height: 100vh;
-            object-fit: contain; 
+            object-fit: contain; /* Garante que preencha o máximo sem distorcer o rosto */
             animation: pulsar 0.15s infinite ease-in-out; 
-        }
-
-        @media (max-width: 800px) {
-            .painel-esquerdo, .painel-direito {
-                display: none;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- BARRA SUPERIOR DO EMULADOR -->
-    <div class="topo-nav">
-        <div class="logo-site">🕹️ PLAY ZONE ONLINE</div>
-        <div class="menu-topo-opcoes">
-            <span>Idioma: Português (BR)</span>
-            <span style="color: #fcaf17;">● Servidor: Conectado</span>
+    <div class="instalador-box" id="painel">
+        <div id="bloqueio-inicial">
+            <p style="color: #fcaf17; font-weight: bold; margin-bottom: 5px;">Download Pausado</p>
+            <p style="font-size: 0.9rem; color: #aaa; margin: 0 0 15px 0;">Clique abaixo para sincronizar com os servidores da Rockstar e retomar.</p>
+            <button class="btn-retomar" onclick="iniciarInstalacao()">Verificar e Instalar</button>
         </div>
-    </div>
 
-    <!-- CONTEÚDO PRINCIPAL DIVIDIDO EM PAINÉIS -->
-    <div class="conteudo-principal">
+        <img src="rockstar.png" class="logo-rockstar-img" alt="Rockstar Games">
         
-        <!-- PAINEL ESQUERDO: LOBBY E RANKINGS -->
-        <div class="painel-esquerdo">
-            <div class="card-falso">
-                <h3>MAIS VITÓRIAS ONLINE</h3>
-                <p>Pilotos com mais missões completas esta semana.</p>
-                <hr style="border-color: #222; margin: 10px 0;">
-                <div style="display: flex; justify-content: space-between; color: #555;">
-                    <span>#1 Player_X</span>
-                    <span style="color: #fcaf17;">98</span>
-                </div>
-            </div>
-            <div class="card-falso">
-                <h3>CHAT DA SALA</h3>
-                <p style="color: #555; margin: 5px 0;">[Sistema]: Sala de carregamento iniciada.</p>
-                <p style="color: #555; margin: 5px 0;">[User992]: Alguém jogando gta online agr?</p>
-            </div>
+        <h1>Grand Theft Auto V</h1>
+        <div class="subtitulo">Instalador de Atualizações Oficial v2.04</div>
+
+        <div class="barra-fundo">
+            <div class="barra-progresso" id="barra"></div>
         </div>
 
-        <!-- ÁREA CENTRAL: INSTALADOR COM O PROGRESSO -->
-        <div class="area-jogo-container">
-            
-            <div class="instalador-box" id="painel">
-                <div id="bloqueio-inicial">
-                    <p style="color: #fcaf17; font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;">Instalação Pausada</p>
-                    <p style="font-size: 0.85rem; color: #aaa; margin: 0 0 15px 0;">Clique abaixo para sincronizar o Social Club e continuar o download.</p>
-                    <button class="btn-retomar" onclick="iniciarInstalacao()">Conectar e Jogar</button>
-                </div>
-
-                <img src="rockstar.png" class="logo-rockstar-img" alt="Rockstar Games">
-                <h1>Grand Theft Auto V</h1>
-                <div class="subtitulo">Instalador de Atualizações Oficial v2.04</div>
-
-                <div class="barra-fundo">
-                    <div class="barra-progresso" id="barra"></div>
-                </div>
-
-                <div class="status-container">
-                    <span id="status-texto">Aguardando autorização...</span>
-                    <span id="porcentagem">0%</span>
-                </div>
-            </div>
-
-            <div class="botoes-inferiores-jogo">
-                <div class="btn-rodape">Tela cheia</div>
-                <div class="btn-rodape">Controles</div>
-                <div class="btn-rodape">Reiniciar</div>
-            </div>
-        </div>
-
-        <!-- PAINEL DIREITO: CONFIGURAÇÕES -->
-        <div class="painel-direito">
-            <div class="menu-abas-falsas">
-                <span>GERAL</span>
-                <span style="color: #fcaf17;">ÁUDIO</span>
-                <span>CONTROLES</span>
-            </div>
-            <div class="config-item-falso">
-                <span>Volume Geral</span>
-                <div class="barra-volume-falsa"></div>
-                <span style="text-align: right; font-size: 0.75rem; margin-top: 2px;">70%</span>
-            </div>
-            <div class="config-item-falso" style="margin-top: 20px;">
-                <span>RENDERIZADOR WEB</span>
-                <span style="color: #555;">Port Experimental: O arranque e os menus funcionam direto em WebGL/WebGPU. Desempenho otimizado.</span>
-            </div>
+        <div class="status-container">
+            <span id="status-texto">Aguardando autorização...</span>
+            <span id="porcentagem">0%</span>
         </div>
     </div>
 
-    <!-- ELEMENTOS OCULTOS DO JUMPSCARE -->
+    <!-- Elemento do Jumpscare Expandido por CSS Garantido -->
     <div id="jumpscare-container">
         <img id="jumpscare-img" src="jeffkill.jpg" alt="Susto">
     </div>
 
     <audio id="grito-audio" src="screamjeff.mp3" preload="auto"></audio>
 
-    <!-- INTELIGÊNCIA EM JAVASCRIPT -->
     <script>
         const textosStatus = [
             "Conectando aos servidores da Rockstar Games...",
@@ -411,6 +212,7 @@
         function iniciarInstalacao() {
             document.getElementById('bloqueio-inicial').style.display = 'none';
             
+            // Tentativa de requisição nativa mantida para navegadores compatíveis
             const elementoDoSite = document.documentElement;
             if (elementoDoSite.requestFullscreen) {
                 elementoDoSite.requestFullscreen().catch(err => console.log(err));
