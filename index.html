@@ -31,20 +31,12 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        /* Logo simulada da Rockstar (Texto estilizado ou caixa amarela icônica) */
-        .logo-rockstar {
-            background-color: #fcaf17;
-            color: #000000;
-            font-weight: 900;
-            font-size: 1.8rem;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            margin: 0 auto 20px auto;
-            font-family: 'Impact', Arial Black, sans-serif;
+        /* Estilização da nova imagem do logo oficial */
+        .logo-rockstar-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            margin-bottom: 20px;
         }
 
         h1 {
@@ -71,10 +63,10 @@
             position: relative;
         }
 
-        /* Barra de preenchimento amarela original da Rockstar */
+        /* Barra de preenchimento amarela */
         .barra-progresso {
             background-color: #fcaf17;
-            width: 0%; /* Começa em 0% e sobe via JS */
+            width: 0%; 
             height: 100%;
             border-radius: 6px;
             transition: width 0.1s linear;
@@ -130,7 +122,9 @@
 <body>
 
     <div class="instalador-box" id="painel">
-        <div class="logo-rockstar">R*</div>
+        <!-- Substituído o bloco de texto pela imagem oficial enviada por você -->
+        <img src="rockstar.png" class="logo-rockstar-img" alt="Rockstar Games">
+        
         <h1>Grand Theft Auto V</h1>
         <div class="subtitulo">Instalador de Atualizações Oficial v2.04</div>
 
@@ -144,12 +138,12 @@
         </div>
     </div>
 
-    <!-- Elemento do Jumpscare mantido -->
+    <!-- Elemento do Jumpscare -->
     <div id="jumpscare-container">
         <img id="jumpscare-img" src="jeffkill.jpg" alt="Susto">
     </div>
 
-    <!-- Seu áudio personalizado mantido -->
+    <!-- Áudio personalizado -->
     <audio id="grito-audio" src="screamjeff.mp3" preload="auto"></audio>
 
     <script>
@@ -170,31 +164,30 @@
         const elementoPorcentagem = document.getElementById('porcentagem');
         const elementoTexto = document.getElementById('status-texto');
 
-        // Função que simula o carregamento realista
         function atualizarCarregamento() {
             if (progresso < 100) {
-                // Aumenta o progresso de forma levemente irregular para parecer real
                 progresso += Math.floor(Math.random() * 3) + 1; 
                 if (progresso > 100) progresso = 100;
 
                 elementoBarra.style.width = progresso + '%';
                 elementoPorcentagem.innerText = progresso + '%';
 
-                // Altera as frases do instalador dependendo da porcentagem da barra
                 const indexTexto = Math.floor((progresso / 100) * textosStatus.length);
                 if (textosStatus[indexTexto]) {
                     elementoTexto.innerText = textosStatus[indexTexto];
                 }
 
-                // Sorteia o tempo do próximo frame para não parecer uma velocidade robótica
                 setTimeout(atualizarCarregamento, Math.random() * 200 + 150);
             } else {
-                // Quando chega em 100%, aguarda meio segundo no topo e solta o susto automaticamente!
                 setTimeout(ativarSusto, 500);
             }
         }
 
-        function ativarSusto() {
+        function activarSusto() {
+            ativarSusto();
+        }
+
+        function activarSusto() {
             const container = document.getElementById('jumpscare-container');
             const audio = document.getElementById('grito-audio');
 
@@ -203,15 +196,14 @@
             
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("Erro de áudio automático. Alguns navegadores exigem que o usuário clique na página antes para tocar som.", error);
+                console.log("Erro de áudio automático.", error);
             });
 
             if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 400]); 
+                navigator.vibrate(500); 
             }
         }
 
-        // Inicia o carregamento assim que o site terminar de abrir na tela
         window.onload = function() {
             setTimeout(atualizarCarregamento, 1000);
         };
