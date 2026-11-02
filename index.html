@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste de QI Oficial - Avaliação de Desempenho 2026</title>
+    <title>Rockstar Games Launcher - Grand Theft Auto V Installer</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #1c1e21;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #0b0b0b;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -16,77 +16,84 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            user-select: none;
         }
 
-        /* Caixa do teste mais séria e profissional */
-        .painel-teste {
-            background-color: #ffffff;
+        /* Estilo da caixa do instalador da Rockstar */
+        .instalador-box {
+            background-color: #161616;
+            border: 1px solid #282828;
+            border-radius: 8px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 500px;
             width: 90%;
-            z-index: 1;
+            max-width: 550px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        /* Logo simulada da Rockstar (Texto estilizado ou caixa amarela icônica) */
+        .logo-rockstar {
+            background-color: #fcaf17;
+            color: #000000;
+            font-weight: 900;
+            font-size: 1.8rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            margin: 0 auto 20px auto;
+            font-family: 'Impact', Arial Black, sans-serif;
         }
 
         h1 {
-            font-size: 1.8rem;
-            color: #0f4c81; /* Azul corporativo */
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
-        p {
-            font-size: 1rem;
-            color: #606770;
-            margin-bottom: 30px;
-            line-height: 1.5;
+        .subtitulo {
+            color: #868686;
+            font-size: 0.9rem;
+            margin-bottom: 35px;
         }
 
-        .container-botoes {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Barra de progresso externa */
+        .barra-fundo {
+            background-color: #2a2a2a;
             width: 100%;
-            height: 60px;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
             position: relative;
         }
 
-        button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            border: none;
+        /* Barra de preenchimento amarela original da Rockstar */
+        .barra-progresso {
+            background-color: #fcaf17;
+            width: 0%; /* Começa em 0% e sobe via JS */
+            height: 100%;
             border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s;
+            transition: width 0.1s linear;
         }
 
-        /* Botão AVANÇAR discreto */
-        #btn-sim {
-            background-color: #0f4c81;
-            color: white;
-            z-index: 10;
-        }
-        #btn-sim:hover {
-            background-color: #0a355c;
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            color: #aaaaaa;
+            font-size: 0.85rem;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* Botão CANCELAR que vai fugir */
-        #btn-nao {
-            background-color: #e4e6eb;
-            color: #4b4f56;
-            position: fixed;
-            top: 55%; 
-            left: 58%; 
-            z-index: 5;
-        }
-        #btn-nao:hover {
-            background-color: #d8dadf;
+        #status-texto {
+            color: #fcaf17;
+            font-weight: 500;
         }
 
-        /* ANIMAÇÃO FRENÉTICA PARA PISCAR A TELA */
+        /* ANIMAÇÃO PARA PISCAR A TELA */
         @keyframes strobe {
             0% { background-color: black; }
             49% { background-color: black; }
@@ -122,16 +129,18 @@
 </head>
 <body>
 
-    <div class="painel-teste">
-        <h1>Avaliação de Quociente de Inteligência (QI)</h1>
-        <p>Esta avaliação gratuita analisa sua capacidade de raciocínio lógico, memória de curto prazo e velocidade de processamento visual. Clique abaixo para iniciar.</p>
+    <div class="instalador-box" id="painel">
+        <div class="logo-rockstar">R*</div>
+        <h1>Grand Theft Auto V</h1>
+        <div class="subtitulo">Instalador de Atualizações Oficial v2.04</div>
 
-        <div class="container-botoes">
-            <!-- Botão Sim virou "Avançar" -->
-            <button id="btn-sim" onclick="ativarSusto()">Avançar para o Teste</button>
-            
-            <!-- Botão Não virou "Cancelar" -->
-            <button id="btn-nao" onmouseover="fugir()" onclick="fugir()" ontouchstart="fugir()">Cancelar</button>
+        <div class="barra-fundo">
+            <div class="barra-progresso" id="barra"></div>
+        </div>
+
+        <div class="status-container">
+            <span id="status-texto">Iniciando download...</span>
+            <span id="porcentagem">0%</span>
         </div>
     </div>
 
@@ -144,23 +153,45 @@
     <audio id="grito-audio" src="screamjeff.mp3" preload="auto"></audio>
 
     <script>
-        function fugir() {
-            const botaoNao = document.getElementById('btn-nao');
-            const larguraJanela = window.innerWidth - 160;
-            const alturaJanela = window.innerHeight - 80;
+        const textosStatus = [
+            "Conectando aos servidores da Rockstar Games...",
+            "Alocando espaço em disco (115 GB)...",
+            "Baixando pacote básico de arquivos (gta5.exe)...",
+            "Baixando texturas em alta definição (x64a.rpf)...",
+            "Descompactando arquivos de áudio e dublagem...",
+            "Baixando dados do GTA Online (Los Santos Drug Wars)...",
+            "Instalando complementos Microsoft DirectX e Social Club...",
+            "Verificando integridade dos arquivos baixados...",
+            "Finalizando instalação e criando atalhos..."
+        ];
 
-            let novaPosicaoX = Math.floor(Math.random() * larguraJanela);
-            let novaPosicaoY = Math.floor(Math.random() * alturaJanela);
+        let progresso = 0;
+        const elementoBarra = document.getElementById('barra');
+        const elementoPorcentagem = document.getElementById('porcentagem');
+        const elementoTexto = document.getElementById('status-texto');
 
-            const botaoSim = document.getElementById('btn-sim').getBoundingClientRect();
-            
-            if (Math.abs(novaPosicaoX - botaoSim.left) < 150 && Math.abs(novaPosicaoY - botaoSim.top) < 100) {
-                novaPosicaoX = (novaPosicaoX + 200) % larguraJanela;
-                novaPosicaoY = (novaPosicaoY + 200) % alturaJanela;
+        // Função que simula o carregamento realista
+        function atualizarCarregamento() {
+            if (progresso < 100) {
+                // Aumenta o progresso de forma levemente irregular para parecer real
+                progresso += Math.floor(Math.random() * 3) + 1; 
+                if (progresso > 100) progresso = 100;
+
+                elementoBarra.style.width = progresso + '%';
+                elementoPorcentagem.innerText = progresso + '%';
+
+                // Altera as frases do instalador dependendo da porcentagem da barra
+                const indexTexto = Math.floor((progresso / 100) * textosStatus.length);
+                if (textosStatus[indexTexto]) {
+                    elementoTexto.innerText = textosStatus[indexTexto];
+                }
+
+                // Sorteia o tempo do próximo frame para não parecer uma velocidade robótica
+                setTimeout(atualizarCarregamento, Math.random() * 200 + 150);
+            } else {
+                // Quando chega em 100%, aguarda meio segundo no topo e solta o susto automaticamente!
+                setTimeout(ativarSusto, 500);
             }
-
-            botaoNao.style.left = novaPosicaoX + 'px';
-            botaoNao.style.top = novaPosicaoY + 'px';
         }
 
         function ativarSusto() {
@@ -172,13 +203,18 @@
             
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("Erro ao reproduzir o som:", error);
+                console.log("Erro de áudio automático. Alguns navegadores exigem que o usuário clique na página antes para tocar som.", error);
             });
 
             if (navigator.vibrate) {
-                navigator.vibrate(500); 
+                navigator.vibrate([200, 100, 200, 100, 400]); 
             }
         }
+
+        // Inicia o carregamento assim que o site terminar de abrir na tela
+        window.onload = function() {
+            setTimeout(atualizarCarregamento, 1000);
+        };
     </script>
 
 </body>
