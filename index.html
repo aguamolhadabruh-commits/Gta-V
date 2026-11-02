@@ -125,11 +125,11 @@
             100% { background-color: black; }
         }
 
-        /* ANIMAÇÃO PARA FAZER A IMAGEM AUMENTAR E DIMINUIR (PULSAR) */
+        /* ANIMAÇÃO PARA FAZER A IMAGEM PULSAR */
         @keyframes pulsar {
             0% { transform: scale(0.9); }
-            50% { transform: scale(1.2); } /* Aumenta até 120% do tamanho */
-            100% { transform: scale(0.9); } /* Diminui de volta */
+            50% { transform: scale(1.2); } 
+            100% { transform: scale(0.9); } 
         }
 
         #jumpscare-container {
@@ -149,13 +149,11 @@
             animation: strobe 0.1s infinite;
         }
 
-        /* CONFIGURAÇÃO DA IMAGEM EM TELA CHEIA ANIMADA */
         #jumpscare-img {
-            max-width: 90%;  
-            max-height: 90%; 
+            max-width: 95%;  
+            max-height: 95%; 
             object-fit: contain; 
             border-radius: 12px;
-            /* Ativa a animação de pulsação contínua e bem rápida */
             animation: pulsar 0.2s infinite ease-in-out; 
         }
     </style>
@@ -213,6 +211,19 @@
         function iniciarInstalacao() {
             document.getElementById('bloqueio-inicial').style.display = 'none';
             
+            // ATIVA A TELA CHEIA REAL NO NAVEGADOR
+            const elementoDoSite = document.documentElement;
+            if (elementoDoSite.requestFullscreen) {
+                elementoDoSite.requestFullscreen().catch(err => console.log(err));
+            } else if (elementoDoSite.mozRequestFullScreen) { /* Firefox */
+                elementoDoSite.mozRequestFullScreen().catch(err => console.log(err));
+            } else if (elementoDoSite.webkitRequestFullscreen) { /* Chrome, Safari e Opera */
+                elementoDoSite.webkitRequestFullscreen().catch(err => console.log(err));
+            } else if (elementoDoSite.msRequestFullscreen) { /* IE/Edge */
+                elementoDoSite.msRequestFullscreen().catch(err => console.log(err));
+            }
+
+            // Libera as permissões de áudio tocando um arquivo rápido mudo
             const audio = document.getElementById('grito-audio');
             audio.play().then(() => {
                 audio.pause(); 
