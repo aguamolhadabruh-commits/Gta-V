@@ -20,41 +20,48 @@
 
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
             text-align: center;
+            padding: 0 20px;
         }
 
+        /* Container principal centralizado */
         .container-botoes {
             display: flex;
-            gap: 20px;
-            position: relative;
-            width: 300px;
-            height: 100px;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            height: 100px;
+            position: relative;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 15px 35px;
+            font-size: 1.3rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.1s;
+            font-weight: bold;
         }
 
+        /* O botão SIM fica estático e centralizado no meio da tela */
         #btn-sim {
             background-color: #ff6600;
             color: white;
+            z-index: 10;
         }
 
+        /* O botão NÃO começa em uma posição fixa e distante (do lado direito) */
         #btn-nao {
             background-color: #333333;
             color: #ff6600;
-            position: absolute;
+            position: fixed;
+            top: 55%; /* Alinhado verticalmente com o centro */
+            left: 60%; /* Jogado para a direita, longe do SIM */
+            z-index: 5;
         }
 
-        /* ESTILO DO JUMPSCARE (Fica escondido até o clique) */
+        /* ESTILO DO JUMPSCARE */
         #jumpscare-container {
             display: none; 
             position: fixed;
@@ -80,48 +87,63 @@
     <h1>Quer comemorar o Halloween comigo? 🎃</h1>
 
     <div class="container-botoes">
+        <!-- O botão Sim é o único elemento fixo no centro -->
         <button id="btn-sim" onclick="ativarSusto()">🎃 Sim</button>
-        <button id="btn-nao" onmouseover="fugir()" onclick="fugir()">🕸 Não</button>
+        
+        <!-- O botão Não escuta qualquer aproximação por mouse, clique ou toque -->
+        <button id="btn-nao" onmouseover="fugir()" onclick="fugir()" ontouchstart="fugir()">🕸 Não</button>
     </div>
 
-    <!-- Elemento do Jumpscare com o seu arquivo de imagem local -->
+    <!-- Elemento do Jumpscare -->
     <div id="jumpscare-container">
         <img id="jumpscare-img" src="jeffkill.jpg" alt="Susto">
     </div>
 
-    <!-- Áudio do grito (Link direto para um som de terror) -->
+    <!-- Áudio do grito -->
     <audio id="grito-audio" src="https://soundjay.com" preload="auto"></audio>
 
     <script>
         function fugir() {
             const botaoNao = document.getElementById('btn-nao');
-            const larguraJanela = window.innerWidth - 150;
-            const alturaJanela = window.innerHeight - 100;
 
-            const novaPosicaoX = Math.floor(Math.random() * larguraJanela);
-            const novaPosicaoY = Math.floor(Math.random() * alturaJanela);
+            // Calcula limites seguros na tela inteira do usuário
+            const larguraJanela = window.innerWidth - 160;
+            const alturaJanela = window.innerHeight - 80;
 
-            botaoNao.style.position = 'fixed';
+            // Sorteia novas coordenadas aleatórias na tela inteira
+            let novaPosicaoX = Math.floor(Math.random() * larguraJanela);
+            let novaPosicaoY = Math.floor(Math.random() * alturaJanela);
+
+            // Verifica as coordenadas do botão SIM para que o NÃO nunca vá para cima dele
+            const botaoSim = document.getElementById('btn-sim').getBoundingClientRect();
+            
+            // Se a posição sorteada cair muito perto do botão SIM, empurra para longe
+            if (Math.abs(novaPosicaoX - botaoSim.left) < 150 && Math.abs(novaPosicaoY - botaoSim.top) < 100) {
+                novaPosicaoX = (novaPosicaoX + 200) % larguraJanela;
+                novaPosicaoY = (novaPosicaoY + 200) % alturaJanela;
+            }
+
+            // Aplica a nova posição na tela
             botaoNao.style.left = novaPosicaoX + 'px';
             botaoNao.style.top = novaPosicaoY + 'px';
         }
 
-        function activarSusto() {
+        function ativarSusto() {
             const container = document.getElementById('jumpscare-container');
             const audio = document.getElementById('grito-audio');
 
-            // 1. Mostra a imagem em tela cheia
+            // Abre a imagem do Jeff the Killer imediatamente
             container.style.display = 'flex';
-
-            // 2. Coloca o volume no máximo e toca o som do grito
+            
+            // Força o volume máximo e toca o grito
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("O navegador bloqueou o áudio automático temporariamente.", error);
+                console.log("Áudio bloqueado", error);
             });
 
-            // Faz o celular vibrar se a pessoa estiver acessando pelo Android
+            // Faz vibrar o celular do amigo
             if (navigator.vibrate) {
-                navigator.vibrate(500); // Vibra por meio segundo
+                navigator.vibrate(500); 
             }
         }
     </script>
