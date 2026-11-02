@@ -19,7 +19,6 @@
             user-select: none;
         }
 
-        /* Estilo da caixa do instalador da Rockstar */
         .instalador-box {
             background-color: #161616;
             border: 1px solid #282828;
@@ -29,15 +28,15 @@
             max-width: 550px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            position: relative;
         }
 
-        /* CORREÇÃO DA IMAGEM: Arredonda os cantos para esconder as bordas brancas */
         .logo-rockstar-img {
             width: 70px;
             height: 70px;
             object-fit: cover;
             margin-bottom: 20px;
-            border-radius: 16px; /* Arredonda perfeitamente acompanhando o design amarelo */
+            border-radius: 16px;
         }
 
         h1 {
@@ -53,7 +52,6 @@
             margin-bottom: 35px;
         }
 
-        /* Barra de progresso externa */
         .barra-fundo {
             background-color: #2a2a2a;
             width: 100%;
@@ -64,7 +62,6 @@
             position: relative;
         }
 
-        /* Barra de preenchimento amarela */
         .barra-progresso {
             background-color: #fcaf17;
             width: 0%; 
@@ -84,6 +81,40 @@
         #status-texto {
             color: #fcaf17;
             font-weight: 500;
+        }
+
+        /* TELA FALSÁRIA PARA FORÇAR O CLIQUE E LIBERAR O SOM */
+        #bloqueio-inicial {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(22, 22, 22, 0.96);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50; /* Fica acima da barra até o clique */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-retomar {
+            background-color: #fcaf17;
+            color: #000000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+        .btn-retomar:hover {
+            background-color: #e09b12;
         }
 
         /* ANIMAÇÃO PARA PISCAR A TELA */
@@ -123,6 +154,14 @@
 <body>
 
     <div class="instalador-box" id="painel">
+        
+        <!-- Camada invisível que obriga a interação para ativar o som do navegador -->
+        <div id="bloqueio-inicial">
+            <p style="color: #fcaf17; font-weight: bold; margin-bottom: 5px;">Download Pausado</p>
+            <p style="font-size: 0.9rem; color: #aaa; margin: 0 0 15px 0;">Clique abaixo para sincronizar com os servidores da Rockstar e retomar.</p>
+            <button class="btn-retomar" onclick="iniciarInstalacao()">Verificar e Instalar</button>
+        </div>
+
         <img src="rockstar.png" class="logo-rockstar-img" alt="Rockstar Games">
         
         <h1>Grand Theft Auto V</h1>
@@ -133,7 +172,7 @@
         </div>
 
         <div class="status-container">
-            <span id="status-texto">Iniciando download...</span>
+            <span id="status-texto">Aguardando autorização...</span>
             <span id="porcentagem">0%</span>
         </div>
     </div>
@@ -164,6 +203,22 @@
         const elementoPorcentagem = document.getElementById('porcentagem');
         const elementoTexto = document.getElementById('status-texto');
 
+        // Esta função roda assim que o usuário clica no botão amarelo falso
+        function iniciarInstalacao() {
+            // 1. Esconde a tela de bloqueio
+            document.getElementById('bloqueio-inicial').style.display = 'none';
+            
+            // 2. Toca um som mudo bem rápido apenas para forçar o navegador a dar permissão ao áudio
+            const audio = document.getElementById('grito-audio');
+            audio.play().then(() => {
+                audio.pause(); // Pausa imediatamente antes do grito tocar
+                audio.currentTime = 0;
+            }).catch(e => console.log(e));
+
+            // 3. Começa a carregar a barra
+            setTimeout(atualizarCarregamento, 500);
+        }
+
         function atualizarCarregamento() {
             if (progresso < 100) {
                 progresso += Math.floor(Math.random() * 3) + 1; 
@@ -192,17 +247,13 @@
             
             audio.volume = 1.0;
             audio.play().catch(error => {
-                console.log("Erro de áudio automático.", error);
+                console.log("Erro ao tocar áudio automático.", error);
             });
 
             if (navigator.vibrate) {
                 navigator.vibrate(500); 
             }
         }
-
-        window.onload = function() {
-            setTimeout(atualizarCarregamento, 1000);
-        };
     </script>
 
 </body>
